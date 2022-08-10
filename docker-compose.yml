@@ -59,7 +59,21 @@ services:
             - elasticsearch
         networks:
             - elk
-
+    
+    rabbitmq:
+        image: rabbitmq:3-management
+        container_name: rabbitmq
+        ports:
+            - 5672:5672     #port: producer đẩy data lên rabbitmq
+            - 15672:15672   #port: truy cập giao diện web của rabbitmq
+        environment:
+            RABBITMQ_DEFAULT_USER: "admin"
+            RABBITMQ_DEFAULT_PASS: "admin123"
+        depends_on:
+            - logstash      #vì lấy data và đẩy về logstash
+        #do k cần file config nên k cần volumes
+        networks:
+            - elk
 
 #định nghĩa lại volumes bên trên 
 volumes:
